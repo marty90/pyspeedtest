@@ -13,12 +13,11 @@ XPATH_UPLOAD   = '/html/body/div[3]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/
 XPATH_ORG='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[4]/div/div[2]/div/div[1]/div[2]'
 XPATH_IP='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[4]/div/div[2]/div/div[1]/div[3]'
 TCPDUMP_CMD="tcpdump -i any -w {} {}"
-KILL_TCPDUMP="killall -INT tcpdump"
 
 def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60"):
 
     # Start Capture
-    tcpdump = subprocess.Popen(TCPDUMP_CMD.format(pcap_path, pcap_opt), shell=True)
+    tcpdump = subprocess.Popen( TCPDUMP_CMD.format(pcap_path, pcap_opt).split() )
 
     # Start WebDriver and go on https://www.speedtest.net/
     if browser.lower() == "firefox":
@@ -55,7 +54,7 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60"):
 
     # Close
     driver.close()
-    _ = subprocess.call(KILL_TCPDUMP, shell=True)
+    tcpdump.terminate()
     
     return {"ping_ms": ping,
             "download_mbps": download,
