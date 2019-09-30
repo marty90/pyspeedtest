@@ -53,12 +53,14 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60"):
     org      = driver.find_elements_by_xpath(XPATH_ORG)[0].text
     sip      = driver.find_elements_by_xpath(XPATH_IP)[0].text
 
-    #print("Ping", ping, "ms")
-    #print("Download", download, "Mbps")
-    #print("Upload", upload, "Mbps")
-
     # Close
     driver.close()
     _ = subprocess.call(KILL_TCPDUMP, shell=True)
     
-    return(ping, download, upload, org, sip)
+    return {"ping_ms": ping,
+            "download_mbps": download,
+            "upload_mbps": upload,
+            "organization": org,
+            "server_ip": sip}
+    
+    
