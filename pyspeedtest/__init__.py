@@ -26,6 +26,8 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60"):
             driver = webdriver.Firefox()
         elif browser.lower() == "chrome":
             driver = webdriver.Chrome()
+        elif browser.lower() == "safari":
+            driver = webdriver.Safari()
         else:
             print("Unsupported browser")
             return
