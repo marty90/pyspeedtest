@@ -19,47 +19,52 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60"):
     # Start Capture
     tcpdump = subprocess.Popen( TCPDUMP_CMD.format(pcap_path, pcap_opt).split() )
 
-    # Start WebDriver and go on https://www.speedtest.net/
-    if browser.lower() == "firefox":
-        driver = webdriver.Firefox()
-    elif browser.lower() == "chrome":
-        driver = webdriver.Chrome()
-    else:
-        print("Unsupported browser")
-        return
-    driver.get("https://www.speedtest.net/")
+    try:
 
-    # Click Banner
-    elem = driver.find_elements_by_xpath(XPATH_BANNER)
-    elem[0].click()
-    time.sleep(SHORT_TIME)
+        # Start WebDriver and go on https://www.speedtest.net/
+        if browser.lower() == "firefox":
+            driver = webdriver.Firefox()
+        elif browser.lower() == "chrome":
+            driver = webdriver.Chrome()
+        else:
+            print("Unsupported browser")
+            return
+        driver.get("https://www.speedtest.net/")
 
-    # Click Go
-    elem = driver.find_elements_by_xpath(XPATH_GO)
-    elem[0].click()
-    time.sleep(SHORT_TIME)
+        # Click Banner
+        elem = driver.find_elements_by_xpath(XPATH_BANNER)
+        elem[0].click()
+        time.sleep(SHORT_TIME)
 
-    # Wait Results
-    def num_there(s):
-        return any(i.isdigit() for i in s)
-    element = WebDriverWait(driver, LONG_TIME).until(lambda driver : num_there(driver.find_elements_by_xpath(XPATH_UPLOAD)[0].text))
-    time.sleep(SHORT_TIME)
+        # Click Go
+        elem = driver.find_elements_by_xpath(XPATH_GO)
+        elem[0].click()
+        time.sleep(SHORT_TIME)
 
-    # Get Results
-    ping     = driver.find_elements_by_xpath(XPATH_PING)[0].text
-    download = driver.find_elements_by_xpath(XPATH_DOWNLOAD)[0].text
-    upload   = driver.find_elements_by_xpath(XPATH_UPLOAD)[0].text
-    org      = driver.find_elements_by_xpath(XPATH_ORG)[0].text
-    sip      = driver.find_elements_by_xpath(XPATH_IP)[0].text
+        # Wait Results
+        def num_there(s):
+            return any(i.isdigit() for i in s)
+        element = WebDriverWait(driver, LONG_TIME).until(lambda driver : num_there(driver.find_elements_by_xpath(XPATH_UPLOAD)[0].text))
+        time.sleep(SHORT_TIME)
 
-    # Close
-    driver.close()
-    tcpdump.terminate()
+        # Get Results
+        ping     = driver.find_elements_by_xpath(XPATH_PING)[0].text
+        download = driver.find_elements_by_xpath(XPATH_DOWNLOAD)[0].text
+        upload   = driver.find_elements_by_xpath(XPATH_UPLOAD)[0].text
+        org      = driver.find_elements_by_xpath(XPATH_ORG)[0].text
+        sip      = driver.find_elements_by_xpath(XPATH_IP)[0].text
+
+        # Close
+        driver.close()
+        tcpdump.terminate()
+        
+        return {"ping_ms": ping,
+                "download_mbps": download,
+                "upload_mbps": upload,
+                "organization": org,
+                "server_ip": sip}
     
-    return {"ping_ms": ping,
-            "download_mbps": download,
-            "upload_mbps": upload,
-            "organization": org,
-            "server_ip": sip}
-    
-    
+    except:
+        tcpdump.terminate()
+        raise
+        
