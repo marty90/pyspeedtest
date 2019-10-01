@@ -67,6 +67,9 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60"):
                 "server_ip": sip}
     
     except:
-        tcpdump.terminate()
+        if 'tcpdump' in locals():
+            tcpdump.terminate()
+        if 'driver' in locals():
+            driver.close()
         raise
         
