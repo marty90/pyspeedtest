@@ -6,12 +6,25 @@ import time
 SHORT_TIME=2
 LONG_TIME=120
 XPATH_BANNER='//*[@id="_evidon-banner-acceptbutton"]'
-XPATH_GO='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[1]/a/span[4]'
-XPATH_PING     = '/html/body/div[3]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[3]/div/div[1]/div[2]/div[1]/div/div[2]/span'
-XPATH_DOWNLOAD = '/html/body/div[3]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[3]/div/div[1]/div[2]/div[2]/div/div[2]/span'
-XPATH_UPLOAD   = '/html/body/div[3]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[3]/div/div[1]/div[2]/div[3]/div/div[2]/span'
-XPATH_ORG='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[4]/div/div[2]/div/div[1]/div[2]'
-XPATH_IP='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[4]/div/div[2]/div/div[1]/div[3]'
+XPATH_GO='//span[@class="start-text"]'
+
+XPATH_PING =     '//span[@class="result-data-large number result-data-value ping-speed"]'
+XPATH_DOWNLOAD = '//span[@class="result-data-large number result-data-value download-speed"]'
+XPATH_UPLOAD =   '//span[@class="result-data-large number result-data-value upload-speed"]'
+
+XPATH_ORG =     '//div[@class="result-label js-data-isp"]' 
+XPATH_IP =      '//div[@class="result-data js-data-ip"]' 
+XPATH_SPONSOR = '//a[@class="js-data-sponsor"]' 
+XPATH_CITY =    '//div[@class="result-data js-sponsor-name"]' 
+
+# OLDER PATHS
+#XPATH_GO='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[1]/a/span[4]'
+#XPATH_PING     = '/html/body/div[3]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[3]/div/div[1]/div[2]/div[1]/div/div[2]/span'
+#XPATH_DOWNLOAD = '/html/body/div[3]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[3]/div/div[1]/div[2]/div[2]/div/div[2]/span'
+#XPATH_UPLOAD   = '/html/body/div[3]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[3]/div/div[1]/div[2]/div[3]/div/div[2]/span'
+#XPATH_ORG='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[4]/div/div[2]/div/div[1]/div[2]'
+#XPATH_IP='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[4]/div/div[2]/div/div[1]/div[3]'
+
 TCPDUMP_CMD="tcpdump -i {} -w {} {}"
 
 def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", pcap_iface='any'):
@@ -55,6 +68,8 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", p
         upload   = driver.find_elements_by_xpath(XPATH_UPLOAD)[0].text
         org      = driver.find_elements_by_xpath(XPATH_ORG)[0].text
         sip      = driver.find_elements_by_xpath(XPATH_IP)[0].text
+        sponsor  = driver.find_elements_by_xpath(XPATH_SPONSOR)[0].text
+        city     = driver.find_elements_by_xpath(XPATH_CITY)[0].text
 
         # Close
         driver.close()
@@ -64,7 +79,9 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", p
                 "download_mbps": download,
                 "upload_mbps": upload,
                 "organization": org,
-                "server_ip": sip}
+                "server_ip": sip,
+                "sponsor": sponsor,
+                "city": city}
     
     except:
         if 'tcpdump' in locals():
