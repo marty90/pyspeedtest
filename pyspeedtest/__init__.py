@@ -24,13 +24,12 @@ XPATH_CITY =    '//div[@class="result-data js-sponsor-name"]'
 #XPATH_UPLOAD   = '/html/body/div[3]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[3]/div/div[1]/div[2]/div[3]/div/div[2]/span'
 #XPATH_ORG='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[4]/div/div[2]/div/div[1]/div[2]'
 #XPATH_IP='//*[@id="container"]/div[2]/div/div/div/div[3]/div[1]/div[3]/div/div[4]/div/div[2]/div/div[1]/div[3]'
+TCPDUMP_CMD="{} -i {} -w {} {}"
 
-TCPDUMP_CMD="tcpdump -i {} -w {} {}"
-
-def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", pcap_iface='any'):
+def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", pcap_iface='any', pcap_bin='tcpdump'):
 
     # Start Capture
-    tcpdump = subprocess.Popen( TCPDUMP_CMD.format(pcap_iface, pcap_path, pcap_opt).split() )
+    tcpdump = subprocess.Popen( TCPDUMP_CMD.format(pcap_bin, pcap_iface, pcap_path, pcap_opt).split() )
 
     try:
 
