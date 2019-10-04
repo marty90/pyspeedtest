@@ -40,6 +40,8 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", p
             driver = webdriver.Chrome()
         elif browser.lower() == "safari":
             driver = webdriver.Safari()
+        elif browser.lower() == "edge":
+            driver = webdriver.Edge()
         else:
             print("Unsupported browser")
             return
