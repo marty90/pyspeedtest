@@ -42,6 +42,16 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", p
             driver = webdriver.Safari()
         elif browser.lower() == "edge":
             driver = webdriver.Edge()
+        elif browser.lower() == "explorer":
+            ieCapabilities = webdriver.DesiredCapabilities().INTERNETEXPLORER.copy()
+            ieCapabilities["nativeEvents"] = False
+            ieCapabilities["unexpectedAlertBehaviour"] = "accept"
+            ieCapabilities["ignoreProtectedModeSettings"] = True
+            ieCapabilities["blocking"] = True
+            ieCapabilities["enablePersistentHover"] = True
+            ieCapabilities["ignoreZoomSetting"] = True
+            ieCapabilities["ensureCleanSession"] = True
+            driver = webdriver.Ie(desired_capabilities=ieCapabilities)
         else:
             print("Unsupported browser")
             return
@@ -49,7 +59,8 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", p
 
         # Click Banner
         elem = driver.find_elements_by_xpath(XPATH_BANNER)
-        elem[0].click()
+        if len(elem)>0:
+            elem[0].click()
         time.sleep(SHORT_TIME)
 
         # Click Go
