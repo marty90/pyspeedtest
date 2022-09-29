@@ -5,10 +5,10 @@ import time
 
 SHORT_TIME=2
 LONG_TIME=120
-XPATH_BANNER='//*[@id="_evidon-banner-acceptbutton"]'
+XPATH_BANNER='//*[@id="onetrust-accept-btn-handler"]'
 XPATH_GO='//span[@class="start-text"]'
 
-XPATH_PING =     '//span[@class="result-data-large number result-data-value ping-speed"]'
+XPATH_PING =     '//span[@class="result-data-value ping-speed"]'
 XPATH_DOWNLOAD = '//span[@class="result-data-large number result-data-value download-speed"]'
 XPATH_UPLOAD =   '//span[@class="result-data-large number result-data-value upload-speed"]'
 
