@@ -8,8 +8,7 @@ import time
 import os
 
 TEST_NB = 20
-BROWSERS = ["safari"] #["chrome","firefox", "safari"]
-#BROWSERS = ["safari"]
+BROWSERS = ["safari"]
 BASE_DIR='test_' + datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 SLEEP=60
 IFACE = 'en5'
