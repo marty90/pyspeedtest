@@ -58,30 +58,37 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", p
         driver.get("https://www.speedtest.net/")
 
         # Click Banner
-        elem = driver.find_elements_by_xpath(XPATH_BANNER)
+        elem = driver.find_elements("xpath", XPATH_BANNER)
+        print("Element ", elem)
         if len(elem)>0:
-            elem[0].click()
+            if browser.lower() == "safari":
+                driver.execute_script("arguments[0].click();", elem[0])
+            else:
+                elem[0].click()
         time.sleep(SHORT_TIME)
 
         # Click Go
-        elem = driver.find_elements_by_xpath(XPATH_GO)
-        elem[0].click()
+        elem = driver.find_elements("xpath", XPATH_GO)
+        if browser.lower() == "safari":
+            driver.execute_script("arguments[0].click();", elem[0])
+        else:
+            elem[0].click()
         time.sleep(SHORT_TIME)
 
         # Wait Results
         def num_there(s):
             return any(i.isdigit() for i in s)
-        element = WebDriverWait(driver, LONG_TIME).until(lambda driver : num_there(driver.find_elements_by_xpath(XPATH_UPLOAD)[0].text))
+        element = WebDriverWait(driver, LONG_TIME).until(lambda driver : num_there(driver.find_elements("xpath", XPATH_UPLOAD)[0].text))
         time.sleep(SHORT_TIME)
 
         # Get Results
-        ping     = driver.find_elements_by_xpath(XPATH_PING)[0].text
-        download = driver.find_elements_by_xpath(XPATH_DOWNLOAD)[0].text
-        upload   = driver.find_elements_by_xpath(XPATH_UPLOAD)[0].text
-        org      = driver.find_elements_by_xpath(XPATH_ORG)[0].text
-        sip      = driver.find_elements_by_xpath(XPATH_IP)[0].text
-        sponsor  = driver.find_elements_by_xpath(XPATH_SPONSOR)[0].text
-        city     = driver.find_elements_by_xpath(XPATH_CITY)[0].text
+        ping     = driver.find_elements("xpath", XPATH_PING)[0].text
+        download = driver.find_elements("xpath", XPATH_DOWNLOAD)[0].text
+        upload   = driver.find_elements("xpath", XPATH_UPLOAD)[0].text
+        org      = driver.find_elements("xpath", XPATH_ORG)[0].text
+        sip      = driver.find_elements("xpath", XPATH_IP)[0].text
+        sponsor  = driver.find_elements("xpath", XPATH_SPONSOR)[0].text
+        city     = driver.find_elements("xpath", XPATH_CITY)[0].text
 
         # Close
         driver.close()

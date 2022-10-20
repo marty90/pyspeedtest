@@ -7,11 +7,11 @@ import json
 import time
 import os
 
-TEST_NB = 20
+TEST_NB = 50
 BROWSERS = ["safari"]
 BASE_DIR='test_' + datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 SLEEP=60
-IFACE = 'en5'
+IFACE = 'en0'
 
 if not os.path.exists(BASE_DIR):
     os.makedirs(BASE_DIR)
