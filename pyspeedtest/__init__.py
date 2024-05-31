@@ -27,9 +27,10 @@ XPATH_CITY = '//div[@class="result-data js-sponsor-name"]'
 TCPDUMP_CMD = "{} -i {} -w {} {}"
 
 
-def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", pcap_iface='any', pcap_bin='tcpdump'):
-    # Start Capture
-    tcpdump = subprocess.Popen(TCPDUMP_CMD.format(pcap_bin, pcap_iface, pcap_path, pcap_opt).split())
+def run_speedtest(browser="chrome", pcap_path=None, pcap_opt="-s 60", pcap_iface='any', pcap_bin='tcpdump'):
+    if pcap_path is not None:
+        # Start Capture
+        tcpdump = subprocess.Popen(TCPDUMP_CMD.format(pcap_bin, pcap_iface, pcap_path, pcap_opt).split())
 
     try:
 
@@ -94,7 +95,8 @@ def run_speedtest(browser="chrome", pcap_path="/tmp/a.pcap", pcap_opt="-s 60", p
 
         # Close
         driver.close()
-        tcpdump.terminate()
+        if pcap_path is not None:
+            tcpdump.terminate()
 
         return {"ping_ms": ping,
                 "download_mbps": download,
